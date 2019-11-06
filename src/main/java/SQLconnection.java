@@ -15,6 +15,7 @@ public class SQLconnection {
         Statement statement = db.createStatement();
         String sqlQuery = "Select * from Employees";
         ResultSet rs = statement.executeQuery(sqlQuery);
+        
 
 /*        while (rs.next()) {
             System.out.println(rs.getDate("StartJobDate"));
@@ -35,6 +36,8 @@ public class SQLconnection {
         int rowInsert = ps.executeUpdate();
         if(rowInsert > 0) {
             System.out.println("Success!");*/
+
+
     }
 
     public Connection connectionToSQLServer() {
@@ -51,11 +54,12 @@ public class SQLconnection {
         return connection;
     }
 
-    public void create(String LastName, String FirstName, String Adress, String City, int Salary, int Age, Date StartJobDate, int Benefit) throws ClassNotFoundException, SQLException {
+    public void createDB(String LastName, String FirstName, String Adress, String City, int Salary, int Age, Date StartJobDate, int Benefit) throws SQLException {
 
         connection = connectionToSQLServer();
 
         String insert = "Insert INTO Employees (LastName, FirstName, Address, City, Salary, Age, StartJobDate, Benefit) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         PreparedStatement ps = connection.prepareStatement(insert);
         ps.setString(1, FirstName);
         ps.setString(2, LastName);
@@ -71,5 +75,26 @@ public class SQLconnection {
         }
     }
 
+    public void updateDB(int CustomerID, String LastName, String FirstName, String Adress, String City, int Salary, int Age, Date StartJobDate, int Benefit)
+            throws  SQLException {
+
+        connection = connectionToSQLServer();
+
+        StringBuilder sb = new StringBuilder();
+        String update = sb.append("Update Employees SET ")
+                .append("FirstName = '").append(FirstName).append("'")
+                .append("LastName = '").append(LastName).append("'")
+                .append("Adress = '").append(Adress).append("'")
+                .append("City = '").append(City).append("'")
+                .append("Salary = '").append(Salary).append("'")
+                .append("Age = '").append(Age).append("'")
+                .append("StartJobDate = '").append(StartJobDate).append("'")
+                .append("Benefit = '").append(Benefit).append("'")
+                .append("WHERE CustomerID =  = '").append(CustomerID)
+                .toString();
+
+        connection.prepareStatement(update);
+    }
 
 }
+
